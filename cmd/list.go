@@ -16,7 +16,11 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		ui.PrintQuests(quests)
+		p, err := storage.LoadPlayer()
+		if err != nil {
+			return err
+		}
+		ui.PrintQuests(quests, p)
 		return nil
 	},
 }

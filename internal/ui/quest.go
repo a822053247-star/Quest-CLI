@@ -2,10 +2,13 @@ package ui
 
 import (
 	"fmt"
+	"quest/internal/player"
 	"quest/internal/quest"
 )
 
-func PrintQuests(quests []quest.Quest) error {
+func PrintQuests(quests []quest.Quest, p player.Player) error {
+	fmt.Println("⚔️ Today's Quests")
+	fmt.Println()
 	if len(quests) == 0 {
 		fmt.Println("No quests found.")
 		return nil
@@ -21,6 +24,12 @@ func PrintQuests(quests []quest.Quest) error {
 		}
 		fmt.Printf("%d %s %s +%d XP %s\n", q.ID, status, q.Title, q.XP, bossMark)
 	}
+	level := player.Level(p.XP)
+	nextLevelXP := level * 100
+	currentLevelXP := p.XP % 100
+	bar := ProgressBar(currentLevelXP)
+	fmt.Printf("\nLv.%d %s %d / %d XP\n", level, bar, p.XP, nextLevelXP)
+	fmt.Printf("🔥 Streak: %d days\n", p.CurrentStreak)
 	return nil
 }
 
@@ -42,4 +51,17 @@ func PrintQuestAlreadyCompleted(id int) {
 
 func PrintQuestCompleted(q quest.Quest) {
 	fmt.Printf("⚔️ Quest completed: %s (+%d XP)\n", q.Title, q.XP)
+}
+
+func ProgressBar(xp int) string {
+	bar := ""
+	filled := xp / 10
+	for i := 0; i < 10; i++ {
+		if i < filled {
+			bar += "█"
+		} else {
+			bar += "░"
+		}
+	}
+	return bar
 }
