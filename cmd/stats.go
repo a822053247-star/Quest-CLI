@@ -1,9 +1,8 @@
 package cmd
 
 import (
-	"fmt"
-	"quest/internal/player"
 	"quest/internal/storage"
+	"quest/internal/ui"
 
 	"github.com/spf13/cobra"
 )
@@ -16,8 +15,7 @@ var statsCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		level := player.Level(p.XP)
-		fmt.Printf("Lv: %d\nXP: %d\n🔥 Streak: %d\n🏆 Best Streak: %d\n", level, p.XP, p.CurrentStreak, p.BestStreak)
+		ui.PrintStats(p)
 		return nil
 	},
 }

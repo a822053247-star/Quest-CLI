@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"fmt"
 	"quest/internal/storage"
+	"quest/internal/ui"
 
 	"github.com/spf13/cobra"
 )
@@ -16,21 +16,7 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		for _, quest := range quests {
-			status := "[ ]"
-			bossMark := ""
-			if quest.Completed {
-				status = "[√]"
-			}
-			if quest.Boss {
-				bossMark = "👹"
-			}
-			fmt.Printf("%d %s %s +%d XP %s\n", quest.ID, status, quest.Title, quest.XP, bossMark)
-		}
-		if len(quests) == 0 {
-			fmt.Println("No quests found.")
-			return nil
-		}
+		ui.PrintQuests(quests)
 		return nil
 	},
 }

@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"fmt"
 	"quest/internal/quest"
 	"quest/internal/storage"
+	"quest/internal/ui"
 
 	"github.com/spf13/cobra"
 )
@@ -29,7 +29,7 @@ var addCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Printf("Quest added: %s\n", q.Title)
+		ui.PrintQuestAdded(q)
 		return nil
 	},
 }

@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"fmt"
 	"quest/internal/player"
 	"quest/internal/quest"
 	"quest/internal/storage"
+	"quest/internal/ui"
 	"strconv"
 	"time"
 
@@ -26,7 +26,7 @@ var doneCmd = &cobra.Command{
 		}
 		q, found := quest.FindQuestByID(quests, id)
 		if !found {
-			fmt.Println("Quest not found")
+			ui.PrintQuestNotFound(id)
 			return nil
 		}
 		quests, _, completed := quest.CompleteQuest(quests, id)
@@ -35,7 +35,7 @@ var doneCmd = &cobra.Command{
 		//	return nil
 		//}
 		if !completed {
-			fmt.Println("Quest already completed")
+			ui.PrintQuestAlreadyCompleted(id)
 			return nil
 		}
 		p, err := storage.LoadPlayer()
@@ -56,7 +56,7 @@ var doneCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		fmt.Println("Quest completed! +%d XP\n", q.XP)
+		ui.PrintQuestCompleted(q)
 		return nil
 	},
 }

@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"fmt"
 	"quest/internal/quest"
 	"quest/internal/storage"
+	"quest/internal/ui"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -24,14 +24,14 @@ var delCmd = &cobra.Command{
 		}
 		quests, isFound := quest.DeleteQuest(quests, id)
 		if !isFound {
-			fmt.Printf("Quest with id %d not found.\n", id)
+			ui.PrintQuestNotFound(id)
 			return nil
 		}
 		err = storage.SaveQuests(quests)
 		if err != nil {
 			return err
 		}
-		fmt.Printf("Quest %d deleted.\n", id)
+		ui.PrintQuestDeleted(id)
 		return nil
 	},
 }
