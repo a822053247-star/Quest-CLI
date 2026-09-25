@@ -9,7 +9,7 @@ type Quest struct {
 	ID        int       `json:"id"`
 	Title     string    `json:"title"`
 	XP        int       `json:"xp"`
-	Boss      string    `json:"boss"`
+	Boss      bool      `json:"boss"`
 	Completed bool      `json:"completed"`
-	CreatedAt time.Time `json:"create"`
+	CreatedAt time.Time `json:"create_at"`
 }
