@@ -1,12 +1,10 @@
 package cmd
 
 import (
-	"quest/internal/player"
-	"quest/internal/quest"
+	"fmt"
 	"quest/internal/storage"
 	"quest/internal/ui"
 	"strconv"
-	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -20,44 +18,66 @@ var doneCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		quests, err := storage.LoadQuests()
+		db, err := storage.OpenMySQL()
 		if err != nil {
 			return err
 		}
-		q, found := quest.FindQuestByID(quests, id)
-		if !found {
-			ui.PrintQuestNotFound(id)
-			return nil
-		}
-		quests, _, completed := quest.CompleteQuest(quests, id)
-		//if !found {
-		//	fmt.Println("Quest not found")
-		//	return nil
-		//}
-		if !completed {
-			ui.PrintQuestAlreadyCompleted(id)
-			return nil
-		}
-		p, err := storage.LoadPlayer()
+		defer db.Close()
+		var dbName string
+		err = db.QueryRow("SELECT DATABASE()").Scan(&dbName)
 		if err != nil {
 			return err
 		}
-		player.AddXP(&p, q.XP)
-		player.UpdateStreak(&p, time.Now())
-		err = storage.SaveQuests(quests)
+
+		fmt.Println("Current database:", dbName)
+		err = storage.EnsurePlayerMySQL(db)
 		if err != nil {
 			return err
 		}
-		err = storage.SavePlayer(p)
-		if err != nil {
-			return err
-		}
-		err = storage.SaveQuests(quests)
+		q, err := storage.CompleteQuestWithReward(db, id)
 		if err != nil {
 			return err
 		}
 		ui.PrintQuestCompleted(q)
 		return nil
+		//quests, err := storage.LoadQuests()
+		//if err != nil {
+		//	return err
+		//}
+		//q, found := quest.FindQuestByID(quests, id)
+		//if !found {
+		//	ui.PrintQuestNotFound(id)
+		//	return nil
+		//}
+		//quests, _, completed := quest.CompleteQuest(quests, id)
+		////if !found {
+		////	fmt.Println("Quest not found")
+		////	return nil
+		////}
+		//if !completed {
+		//	ui.PrintQuestAlreadyCompleted(id)
+		//	return nil
+		//}
+		//p, err := storage.LoadPlayer()
+		//if err != nil {
+		//	return err
+		//}
+		//player.AddXP(&p, q.XP)
+		//player.UpdateStreak(&p, time.Now())
+		//err = storage.SaveQuests(quests)
+		//if err != nil {
+		//	return err
+		//}
+		//err = storage.SavePlayer(p)
+		//if err != nil {
+		//	return err
+		//}
+		//err = storage.SaveQuests(quests)
+		//if err != nil {
+		//	return err
+		//}
+		//ui.PrintQuestCompleted(q)
+		//return nil
 	},
 }
 

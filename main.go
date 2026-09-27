@@ -5,7 +5,30 @@ import "quest/cmd"
 // TIP <p>To run your code, right-click the code and select <b>Run</b>.</p> <p>Alternatively, click
 // the <icon src="AllIcons.Actions.Execute"/> icon in the gutter and select the <b>Run</b> menu item from here.</p>
 func main() {
+	//db, err := storage.OpenMySQL()
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return
+	//}
+	//defer db.Close()
+	//
+	//q := quest.Quest{
+	//	Title:     "Learn MySQL",
+	//	XP:        50,
+	//	Boss:      false,
+	//	Completed: false,
+	//	CreatedAt: time.Now(),
+	//}
+	//
+	//id, err := storage.CreateQuestMySQL(db, q)
+	//if err != nil {
+	//	fmt.Println("insert failed:", err)
+	//	return
+	//}
+	//
+	//fmt.Println("new quest id:", id)
 	cmd.Execute()
+
 	//fmt.Println("Quest CLI")
 	//q := quest.Quest{
 	//	ID:        1,
@@ -28,4 +51,5 @@ func main() {
 	//	return
 	//}
 	//fmt.Println("加载成功", loadedQuests)
+
 }
